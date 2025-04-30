@@ -1,0 +1,182 @@
+/* #root {
+  max-width: 1280px;
+   margin: 0;
+   padding: 0;
+  padding: 2rem;
+  text-align: center; 
+} */
+.warning{
+  color: red;
+  font-size: xx-large;
+  font-weight: bold;
+  text-align: center;
+}
+* {
+  margin: 0;
+  padding: 0;
+  font-family: Rowdies, sans-serif;
+  font-weight: 200;
+  border-radius: 8px;
+}
+html {
+  margin: 0;
+  padding: 0;
+  background-color: #001;
+  color: white;
+}
+.header {
+  display: flex;
+  background-color: #020279;
+  padding: 20px;
+  justify-content: space-between;
+  align-items: center;
+  text-align: center;
+}
+.logo {
+  font-size: x-large;
+  font-weight: bold;
+}
+.search {
+  flex-grow: 0.75;
+  background-color: #020290;
+  padding: 7px;
+  border-radius: 8px;
+  border: none;
+  outline: none;
+  color: white;
+}
+.mainContent {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 15px;
+  /* border-radius: 8px; */
+}
+.exit {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  background-color: #000011c5;
+  color: white;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  border: none;
+  font-size: larger;
+  cursor: pointer;
+  display: flex; /* NEW */
+  justify-content: center; /* NEW — center horizontally */
+  align-items: center; /* NEW — center vertically */
+}
+.return {
+  position: absolute;
+  top: 5px;
+  left: 5px;
+  align-self: flex-start;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  border: none;
+  font-size: larger;
+  cursor: pointer;
+  display: flex; /* NEW */
+  justify-content: center; /* NEW — center horizontally */
+  align-items: center; /* NEW — center vertically */
+}
+.leftBox {
+  position: relative;
+  background-color: #111116df;
+  width: 45%;
+  padding: 10px 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+.movie,
+.watchedMovie {
+  display: flex;
+  gap: 30px;
+  transition: 0.25s;
+}
+.watchedMovie {
+  position: relative;
+}
+.movie:hover,
+.watchedMovie:hover {
+  background-color: #29292f;
+  cursor: pointer;
+}
+.moviedata {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+}
+.movieImage {
+  width: 40px;
+  height: 60px;
+}
+.movieImage img {
+  width: 40px;
+  height: 60px;
+}
+/*23232ab6*/
+
+.rightBox,
+.card {
+  position: relative;
+  background-color: #111116df;
+  width: 45%;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+.options {
+  display: flex;
+  justify-content: space-between;
+}
+.movieDetailsCard {
+  background-color: #2b2b2d63;
+  display: flex;
+  gap: 20px;
+  flex-grow: 1;
+}
+.movieDetailsImage {
+  height: 100%;
+  width: 100px;
+}
+.movieDetailsImage img {
+  height: 100%;
+  width: 100px;
+}
+.movieDetail {
+  padding: 10px;
+  width: fit-content;
+  padding: 10px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  text-align: center;
+  flex-grow: 1;
+}
+.movieBrief {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.starsRating {
+  background-color: #2b2b2d63;
+  padding: 10px;
+  text-align: center;
+}
+
+.allWatched {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  background-color: #2b2b2d63;
+  padding: 20px;
+}
+.statistics {
+  display: flex;
+  justify-content: space-between;
+}
