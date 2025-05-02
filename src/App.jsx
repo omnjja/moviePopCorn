@@ -1,7 +1,11 @@
 import { use, useEffect, useState } from "react";
 import "./App.css";
-import { CiStar } from "react-icons/ci";
+import "./useLocalStorage";
 
+const average = (arr) => {
+  const nums = arr.map(Number).filter((n) => !isNaN(n));
+  return nums.reduce((acc, cur) => acc + cur / nums.length, 0);
+};
 const KEY = "57ebaed5";
 function App() {
   const [movies, setMovies] = useState([]);
@@ -9,12 +13,27 @@ function App() {
   const [query, setQuery] = useState("");
   const [selectedMovieID, setSelectedMovieID] = useState();
   const [closeTap, setCloseTap] = useState(true);
-  const [exit, setExit] = useState(true);
+  const [exit, setExit] = useState(false);
+  const [watchedMovies, setWatchedMovies] = useState(() => {
+    try {
+      const storedValue = localStorage.getItem("watched");
+      const parsed = storedValue ? JSON.parse(storedValue) : [];
 
+      return Array.isArray(parsed) ? parsed : [];
+    } catch (e) {
+      console.error("Error parsing localStorage", e);
+      return [];
+    }
+  });
 
   function handleClose() {
     setCloseTap(!closeTap);
   }
+
+  // solution of issues!!!!!
+  useEffect(() => {
+    localStorage.setItem("watched", JSON.stringify(watchedMovies));
+  }, [watchedMovies]);
   useEffect(
     function () {
       async function fetchMovies() {
@@ -61,9 +80,14 @@ function App() {
             // setUserRating={setUserRating}
             closeTap={closeTap}
             setExit={setExit}
+            watchedMovies={watchedMovies}
+            setWatchedMovies={setWatchedMovies}
           />
         ) : (
-          <WatchedMovies />
+          <WatchedMovies
+            watchedMovies={watchedMovies}
+            setWatchedMovies={setWatchedMovies}
+          />
         )}
       </div>
       <p className="warning">❗ HAVE NOT FINISHED YET ❗</p>
@@ -142,10 +166,34 @@ function MovieDetails({
   // userRating,
   // setUserRating,
   setExit,
+  watchedMovies,
+  setWatchedMovies,
 }) {
   const [selectedMovie, setSelectedMovie] = useState({});
   const [userRating, setUserRating] = useState(0);
   const [tempRating, setTempRating] = useState(0);
+
+  function addToList() {
+    setWatchedMovies([
+      ...watchedMovies,
+      { ...selectedMovie, userRate: userRating },
+    ]);
+    localStorage.setItem(
+      "watched",
+      JSON.stringify([
+        ...watchedMovies,
+        { selectedMovie, userRate: userRating },
+      ])
+    );
+    // localStorage.setItem(
+    //   "watched",
+    //   JSON.stringify([
+    //     ...watchedMovies,
+    //     { ...selectedMovie, userRate: userRating },
+    //   ])
+    // );
+    setExit(false);
+  }
   useEffect(
     function () {
       async function fetchMovieDetails() {
@@ -185,7 +233,7 @@ function MovieDetails({
               {`${selectedMovie?.Released}.${selectedMovie?.Runtime}`}
             </div>
             <div className="type">{selectedMovie?.Genre}</div>
-            <div className="IMBDrating">{`✨ ${selectedMovie?.imdbRating} IMBD Rating`}</div>
+            <div className="IMBDrating">{`⭐ ${selectedMovie?.imdbRating} IMBD Rating`}</div>
           </div>
         </div>
         <div className="movieBrief">
@@ -199,7 +247,13 @@ function MovieDetails({
                 {tempRating ? tempRating : userRating ? userRating : ""}
               </p>
             </div>
-            <button className="add" style={userRating? {} : {display: "none"}}>+ Add to watched list</button>
+            <button
+              className="add"
+              style={userRating ? {} : { display: "none" }}
+              onClick={() => addToList()}
+            >
+              + Add to watched list
+            </button>
           </div>
           <div className="plot">{selectedMovie?.Plot}</div>
           <div className="actors">{selectedMovie?.Actors}</div>
@@ -282,8 +336,19 @@ function Star({ onClick, onHoverIn, onHoverOut }) {
   );
 }
 
-function WatchedMovies() {
+function WatchedMovies({ watchedMovies, setWatchedMovies }) {
   const [closeWatched, setClosWatched] = useState(true);
+  const numOfMovies = watchedMovies?.length;
+  const [avgIMBDrating, setAvgIMBDrating] = useState(
+    average(watchedMovies.map((wat) => wat.imdbRating))
+  );
+  const [avgUserRating, setAvgUserRating] = useState(
+    average(watchedMovies.map((wat) => wat.userRate))
+  );
+  const [avgTime, setAvgTime] = useState(
+    average(watchedMovies.map((wat) => Number(wat.Runtime.split(" ")[0])))
+  );
+
   return (
     <div className="card">
       <button className="exit" onClick={() => setClosWatched(!closeWatched)}>
@@ -291,30 +356,47 @@ function WatchedMovies() {
       </button>
       <div style={closeWatched ? {} : { display: "none" }}>
         <div className="allWatched">
-          <div>movies u have wathced</div>
+          <h1>Movies You Have Wathced</h1>
           <div className="statistics">
-            <div className="count">2 movies</div>
-            <div className="IMBDavgRating">8.3 </div>
-            <div className="userAvgRating">5.3</div>
-            <div className="avgTime">81.5 mins</div>
+            <div className="count">{`${numOfMovies} Movies`}</div>
+            <div className="IMBDavgRating">{`⭐ ${avgIMBDrating}`}</div>
+            <div className="userAvgRating">{`🌟 ${avgUserRating}`}</div>
+            <div className="avgTime">{`⌛ ${avgTime} min`}</div>
           </div>
-        </div>
-        <div className="watchedMovie">
-          <button className="exit">❌</button>
-          <div className="movieImage">
-            <img
-              src="https://c8.alamy.com/comp/2RAGC2N/oppenheimer-us-dolby-cinema-poster-cillian-murphy-as-j-robert-oppenheimer-2023-universal-pictures-courtesy-everett-collection-2RAGC2N.jpg"
-              alt=""
+          {watchedMovies?.map((watchedMovie) => (
+            <WatchedMovie
+              key={watchedMovie.imdbID}
+              watchedMovie={watchedMovie}
+              watchedMovies={watchedMovies}
+              setWatchedMovies={setWatchedMovies}
             />
-          </div>
-          <div className="moviedata">
-            <div className="movieName">movie name</div>
-            <div className="statistics">
-              <div className="IMBDRating">8.3 </div>
-              <div className="userRating">5.3</div>
-              <div className="time">81.5 mins</div>
-            </div>
-          </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+function WatchedMovie({ watchedMovie, watchedMovies, setWatchedMovies }) {
+  function handleRemoveMovie(id) {
+    setWatchedMovies(watchedMovies.filter((w) => w.imdbID !== id));
+  }
+  return (
+    <div className="watchedMovie">
+      <button
+        className="exit"
+        onClick={() => handleRemoveMovie(watchedMovie.imdbID)}
+      >
+        ❌
+      </button>
+      <div className="movieImage">
+        <img src={watchedMovie.Poster} alt="" />
+      </div>
+      <div className="moviedata">
+        <div className="movieName">{watchedMovie.Title}</div>
+        <div className="statistics">
+          <div className="IMBDRating">{`⭐ ${watchedMovie.imdbRating}`}</div>
+          <div className="userRating">{`🌟 ${watchedMovie.userRate}`}</div>
+          <div className="time">{`⌛ ${watchedMovie.Runtime}`}</div>
         </div>
       </div>
     </div>

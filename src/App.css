@@ -103,10 +103,13 @@ html {
   background-color: #29292f;
   cursor: pointer;
 }
+.movieName {
+  align-self: flex-start;
+}
 .moviedata {
   display: flex;
   flex-direction: column;
-  justify-content: space-evenly;
+  justify-content: center;
 }
 .movieImage {
   width: 40px;
@@ -198,7 +201,8 @@ html {
 }
 .statistics {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
+  gap: 15px;
 }
 
 .star {
