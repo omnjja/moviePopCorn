@@ -1,8 +1,8 @@
 #root {
-  text-align: center; 
+  text-align: center;
   margin: auto;
 }
-.warning{
+.warning {
   color: red;
   font-size: xx-large;
   font-weight: bold;
@@ -79,7 +79,7 @@ html {
   justify-content: center; /* NEW — center horizontally */
   align-items: center; /* NEW — center vertically */
 }
-.leftBox {
+.box {
   position: relative;
   background-color: #111116df;
   width: 45%;
@@ -87,6 +87,7 @@ html {
   display: flex;
   flex-direction: column;
   gap: 15px;
+  min-height: 600px;
 }
 .movie,
 .watchedMovie {
@@ -161,10 +162,28 @@ html {
   flex-direction: column;
   gap: 20px;
 }
-.starsRating {
+.ratingBox {
   background-color: #2b2b2d63;
   padding: 10px;
   text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.add {
+  align-self: center;
+  padding: 15px;
+  background-color: #020279;
+  color: white;
+  border-radius: 20px;
+  border: none;
+  outline: none;
+  cursor: pointer;
+}
+.add:hover {
+  background-color: #010182;
+}
+.starsRating {
   display: flex;
   justify-content: center;
   gap: 20px;
@@ -182,19 +201,19 @@ html {
   justify-content: space-between;
 }
 
-.star{
+.star {
   color: orange;
   display: flex;
   justify-content: center;
   align-items: center;
   gap: 1px;
 }
-.star:hover{
+.star:hover {
   fill: orange;
   cursor: pointer;
 }
 
-.rating{
+.rating {
   display: flex;
   justify-content: space-between;
 }
