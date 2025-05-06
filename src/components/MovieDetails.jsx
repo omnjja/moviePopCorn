@@ -47,9 +47,9 @@ const MovieDetails = ({
           const res = await fetch(
             `http://www.omdbapi.com/?apikey=${KEY}&i=${selectedMovieID}`
           );
-          if (!res.ok) throw new Error("can't fetch movie");
+          if (!res.ok) throw new Error("Can't Fetch Movie");
           const data = await res.json();
-          if (data.Response === false) throw new Error("no data");
+          if (data.Response !== "True") throw new Error("No Response :(");
           setSelectedMovie(data);
           setErrorMsg("");
         } catch (error) {
@@ -59,6 +59,8 @@ const MovieDetails = ({
         }
       }
       fetchMovieDetails();
+      console.log(selectedMovieID);
+      console.log(selectedMovie);
     },
     [selectedMovieID]
   );
@@ -68,7 +70,7 @@ const MovieDetails = ({
       {loading ? (
         <Loading>LOADING ⌛</Loading>
       ) : errorMsg ? (
-        <Loading>{errorMsg}</Loading>
+        <Loading>{`${errorMsg} ❗`}</Loading>
       ) : (
         <div className="rightBox">
           <button className="exit" onClick={() => handleClose()}>

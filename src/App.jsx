@@ -5,7 +5,6 @@ import MovieList from "./components/MovieList";
 import MovieDetails from "./components/MovieDetails";
 import WatchedMovies from "./components/WatchedMovies";
 import Loading from "./components/Loading";
-import { Fa0 } from "react-icons/fa6";
 
 const KEY = "57ebaed5";
 
@@ -49,14 +48,13 @@ function App() {
           if (!res.ok) throw new Error("Error Occured While Fetching Data");
 
           const data = await res.json();
-          if (data.Response === false) throw new Error("No Response");
+          if (data.Response !== "True") throw new Error("No Response");
 
           setMovies(data.Search);
-          setIsError("")
+          setIsError("");
         } catch (error) {
           setIsError(error.message);
-        }
-        finally{
+        } finally {
           setIsLoading(false);
         }
       }
@@ -80,7 +78,7 @@ function App() {
         ) : isLoading ? (
           <Loading>LOADING ⌛</Loading>
         ) : iserror ? (
-          <Loading>{iserror}</Loading>
+          <Loading>{`${iserror} ❗`}</Loading>
         ) : (
           <MovieList
             movies={movies}
