@@ -107,7 +107,6 @@ function App() {
           />
         )}
       </div>
-      <p className="warning">❗ HAVE NOT FINISHED YET ❗</p>
     </>
   );
 }
