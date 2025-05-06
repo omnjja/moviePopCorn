@@ -80,6 +80,7 @@ html {
   align-items: center; /* NEW — center vertically */
 }
 .box {
+  justify-content: center; /* NEW — center horizontally */
   position: relative;
   background-color: #111116df;
   width: 45%;
@@ -119,7 +120,6 @@ html {
   width: 40px;
   height: 60px;
 }
-/*23232ab6*/
 
 .rightBox,
 .card {
@@ -204,13 +204,18 @@ html {
   justify-content: center;
   gap: 15px;
 }
-
-.star {
-  color: orange;
+.stars{
   display: flex;
+  color: orange;
   justify-content: center;
   align-items: center;
   gap: 1px;
+}
+.star {
+  display: flex;
+  flex-basis: center ;
+  width: 30px;
+  height: 30px;
 }
 .star:hover {
   fill: orange;
